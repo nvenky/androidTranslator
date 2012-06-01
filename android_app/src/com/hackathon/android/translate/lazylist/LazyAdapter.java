@@ -2,8 +2,8 @@ package com.hackathon.android.translate.lazylist;
 
 import java.util.List;
 
-import com.hackathon.android.facebook.Friend;
 import com.hackathon.android.translate.R;
+import com.hackathon.android.translate.model.Friend;
 
 import android.app.Activity;
 import android.content.Context;

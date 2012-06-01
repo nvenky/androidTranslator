@@ -7,4 +7,5 @@
     <string name="translation_service_description">A translation service provided by your own Friends</string>
     <string name="login">Login</string>
     <string name="login_to_facebook">Login to Facebook</string>
+    <string name="new_message_received">New message received from</string>
 </resources>

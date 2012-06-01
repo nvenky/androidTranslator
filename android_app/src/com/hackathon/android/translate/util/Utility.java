@@ -101,10 +101,23 @@ public class Utility extends Application {
 	}
 
 	public static void updateAccessToken() {
-		sharedPreferences.edit().putString(Constants.ACCESS_TOKEN, facebook.getAccessToken()).commit();		
+		updateSharedPreferences(Constants.ACCESS_TOKEN, facebook.getAccessToken());		
+	}
+	
+	public static void updateC2DMRegistration(String registrationId) {
+		updateSharedPreferences(Constants.C2DM_REGISTRATION_ID, registrationId);		
 	}
 
 	public static AsyncFacebookRunner getAsyncRunner() {
 		return asyncRunner;
 	}
+	
+	public static String getAccessToken() {
+		return sharedPreferences.getString(Constants.ACCESS_TOKEN, null);
+	}
+	
+	private static void updateSharedPreferences(String key, String value){
+		sharedPreferences.edit().putString(key, value).commit();
+	}
+	
 }

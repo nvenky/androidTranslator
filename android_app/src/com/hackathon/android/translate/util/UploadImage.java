@@ -12,10 +12,12 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.hackathon.android.translate.constant.Constants;
+
 import android.util.Log;
 
 public class UploadImage {
-	String urlServer = "http://192.168.1.4:3000/upload";
+	String urlServer = Constants.SERVER_URL + "/upload";
 
 	public String upload(File file) throws Exception {
 		try {

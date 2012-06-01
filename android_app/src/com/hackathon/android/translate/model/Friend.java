@@ -1,4 +1,4 @@
-package com.hackathon.android.facebook;
+package com.hackathon.android.translate.model;
 
 public class Friend {
 	private String id;

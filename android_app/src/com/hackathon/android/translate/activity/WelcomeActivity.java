@@ -8,6 +8,7 @@ import android.view.View;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.google.android.c2dm.C2DMessaging;
 import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.util.Utility;
 
@@ -30,8 +31,7 @@ public class WelcomeActivity extends Activity {
 			Utility.getFacebook().authorize(this, new String[] { "email", "publish_checkins" }, new DialogListener() {
 				public void onComplete(Bundle values) {
 					Utility.updateAccessToken();
-					Intent indexActivityIntent = new Intent(getApplicationContext(), IndexActivity.class);
-					startActivity(indexActivityIntent);
+					afterLogin();
 				}
 
 				public void onCancel() {
@@ -44,15 +44,19 @@ public class WelcomeActivity extends Activity {
 				}
 			});
 		} else {
-			Intent indexActivityIntent = new Intent(getApplicationContext(), IndexActivity.class);
-			startActivity(indexActivityIntent);
+			afterLogin();
 		}
 	}
 
+	public void afterLogin(){
+		C2DMessaging.register(WelcomeActivity.this);
+		Intent indexActivityIntent = new Intent(getApplicationContext(), IndexActivity.class);
+		startActivity(indexActivityIntent);
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		Utility.getFacebook().authorizeCallback(requestCode, resultCode, data);
 	}
-
 }

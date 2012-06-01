@@ -6,7 +6,7 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-#gem 'c2dm_on_rails'
+gem 'c2dm'
 
 
 # Gems used only for assets and not required

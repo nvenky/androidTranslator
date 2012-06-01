@@ -16,7 +16,7 @@ import android.util.Log;
 
 import com.facebook.android.FacebookError;
 import com.facebook.android.AsyncFacebookRunner.RequestListener;
-import com.hackathon.android.facebook.Friend;
+import com.hackathon.android.translate.model.Friend;
 
 public class FBFriendsRequestListener implements RequestListener {
 	
