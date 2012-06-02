@@ -176,7 +176,6 @@ public class CameraPreviewActivity extends Activity {
 		protected String doInBackground(byte[]... jpeg) {
 			File photo = new File(Environment.getExternalStorageDirectory(),
 					"photo.jpg");
-
 			System.out.println("File name - " + photo.getAbsolutePath());
 			if (photo.exists()) {
 				photo.delete();
@@ -184,7 +183,6 @@ public class CameraPreviewActivity extends Activity {
 
 			try {
 				FileOutputStream fos = new FileOutputStream(photo.getPath());
-
 				fos.write(jpeg[0]);
 				fos.close();
 				new UploadImage().upload(photo);

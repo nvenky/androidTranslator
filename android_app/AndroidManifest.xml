@@ -11,15 +11,18 @@
         android:name="android.hardware.camera.front"
         android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
- 	<permission android:name="com.hackathon.android.translate.permission.C2D_MESSAGE" android:protectionLevel="signature" />  
-  	<uses-permission android:name="com.hackathon.android.translate.permission.C2D_MESSAGE" />
-  
-  	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-  	<uses-permission android:name="android.permission.INTERNET" />
-  	<uses-permission android:name="android.permission.WAKE_LOCK" />
- 
+
+    <permission
+        android:name="com.hackathon.android.translate.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.hackathon.android.translate.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:icon="@drawable/cw"
         android:label="@string/app_name" >
@@ -29,7 +32,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,8 +48,9 @@
             android:name=".activity.FacebookFriendsActivity"
             android:label="@string/app_name" >
         </activity>
-        
-    	<service android:name=".notification.C2DMMessageReceiver" />
+
+        <service android:name=".notification.C2DMMessageReceiver" />
+        <service android:name=".service.RestfulService" />
         
         <receiver
             android:name="com.google.android.c2dm.C2DMBroadcastReceiver"

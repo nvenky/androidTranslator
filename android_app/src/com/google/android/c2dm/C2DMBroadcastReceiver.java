@@ -7,12 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.hackathon.android.translate.notification.C2DMMessageReceiver;
+
 public class C2DMBroadcastReceiver extends BroadcastReceiver {
     
     @Override
     public final void onReceive(Context context, Intent intent) {
-        // To keep things in one place.
-        C2DMBaseReceiver.runIntentInService(context, intent);
-        setResult(Activity.RESULT_OK, null /* data */, null /* extra */);      
+        C2DMMessageReceiver.runIntentInService(context, intent);
+        setResult(Activity.RESULT_OK, null, null);      
     }
 }

@@ -55,7 +55,8 @@ OcrWeb::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   #match ':controller(/:action(/:id))(.:format)'
-  match 'upload' => 'upload#upload_file', :via =>  [:post]
-  match 'message' => 'message#send', :via =>  [:get]
-  match 'register' => 'message#register_device', :via =>  [:post]
+  match 'register' => 'facebook#register_user_online', :via =>  [:post]
+  match 'upload' => 'facebook#upload_file', :via =>  [:post]
+  match 'message' => 'message#send_message', :via =>  [:get]
+  match 'friends' => 'facebook#find_online_friends', :via =>  [:post]
 end

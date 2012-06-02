@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 import com.hackathon.android.translate.R;
-import com.hackathon.android.translate.R.drawable;
-import com.hackathon.android.translate.R.layout;
 
 
 public class IndexActivity extends TabActivity {

@@ -48,6 +48,10 @@ public class WelcomeActivity extends Activity {
 		}
 	}
 
+	public void register(View view){
+		C2DMessaging.register(WelcomeActivity.this);
+	}
+	
 	public void afterLogin(){
 		C2DMessaging.register(WelcomeActivity.this);
 		Intent indexActivityIntent = new Intent(getApplicationContext(), IndexActivity.class);

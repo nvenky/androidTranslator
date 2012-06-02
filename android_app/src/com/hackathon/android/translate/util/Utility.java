@@ -1,8 +1,6 @@
 package com.hackathon.android.translate.util;
 
 import java.io.BufferedInputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -32,7 +30,7 @@ public class Utility extends Application {
     public static String objectID = null;
     public static AndroidHttpClient httpclient = null;
     public static Hashtable<String, String> currentPermissions = new Hashtable<String, String>();
-    private static int MAX_IMAGE_DIMENSION = 720;
+    private static final long DEFAULT_BACKOFF = 30000;
 
     public static Bitmap getBitmap(String url) {
         Bitmap bm = null;
@@ -55,33 +53,10 @@ public class Utility extends Application {
         return bm;
     }
 
-    static class FlushedInputStream extends FilterInputStream {
-        public FlushedInputStream(InputStream inputStream) {
-            super(inputStream);
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            long totalBytesSkipped = 0L;
-            while (totalBytesSkipped < n) {
-                long bytesSkipped = in.skip(n - totalBytesSkipped);
-                if (bytesSkipped == 0L) {
-                    int b = read();
-                    if (b < 0) {
-                        break; // we reached EOF
-                    } else {
-                        bytesSkipped = 1; // we read one byte
-                    }
-                }
-                totalBytesSkipped += bytesSkipped;
-            }
-            return totalBytesSkipped;
-        }
-    }
-
 	public static void loadComponents(Context context) {
 		facebook = new Facebook(Constants.FACEBOOK_APP_ID);
 		sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context);
+		sharedPreferences.edit().remove(Constants.ACCESS_TOKEN).commit();
 		asyncRunner = new AsyncFacebookRunner(facebook);
 	}
 	
@@ -102,14 +77,27 @@ public class Utility extends Application {
 
 	public static void updateAccessToken() {
 		updateSharedPreferences(Constants.ACCESS_TOKEN, facebook.getAccessToken());		
+
 	}
 	
 	public static void updateC2DMRegistration(String registrationId) {
 		updateSharedPreferences(Constants.C2DM_REGISTRATION_ID, registrationId);		
 	}
 
+	public static void clearC2DMRegistration() {
+		sharedPreferences.edit().remove(Constants.C2DM_REGISTRATION_ID).commit();		
+	}
+
 	public static AsyncFacebookRunner getAsyncRunner() {
 		return asyncRunner;
+	}
+	
+	public static void updateBackoff(long backoffTimeInMs) {
+		updateSharedPreferences(Constants.BACKOFF, backoffTimeInMs);		
+	}
+
+	public static long getBackoff() {
+		return sharedPreferences.getLong(Constants.BACKOFF, DEFAULT_BACKOFF);
 	}
 	
 	public static String getAccessToken() {
@@ -119,5 +107,7 @@ public class Utility extends Application {
 	private static void updateSharedPreferences(String key, String value){
 		sharedPreferences.edit().putString(key, value).commit();
 	}
-	
+	private static void updateSharedPreferences(String key, long value){
+		sharedPreferences.edit().putLong(key, value).commit();
+	}
 }
