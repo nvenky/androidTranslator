@@ -6,42 +6,46 @@ class FacebookController < ApplicationController
     name = uploaded_file.original_filename
     path = "/Users/nvenky/#{name}"
     File.open(path, "wb") { |f| f.write(uploaded_file.read) }
-    p "Access token from server - #{params[:access_token]}"
-    p (get_name params[:access_token])
-    send_message_to_online_friends(get_name params[:access_token])
+    send_message_to_online_friends get_user(params[:access_token]).name
     render :text => "File has been uploaded successfully"
   end
 
+  def upload
+    uploaded_file_name = params[:uploaded_file_name]
+    fb_user = get_user(params[:access_token])
+    user = User.find_by_facebook_id fb_user.identifier
+    Image.new({:user => user, :file_name => uploaded_file_name}).save!
+    send_message_to_online_friends user.name
+    render :text => "File has been uploaded successfully"
+  end
+
+
   def find_online_friends
      access_token = params[:access_token]
-     user = FbGraph::User.me(access_token).fetch
+     user = get_user access_token
      min_online_friends_for_testing = 5
      friends = user.friends.select{|friend| is_online?(friend.raw_attributes[:id], min_online_friends_for_testing-=1)}
      .collect{|friend| {:id => friend.raw_attributes[:id], :name => friend.raw_attributes[:name]}}
-     json = {:data => friends}
+     json = {:id => user.id, :data => friends}
      render :json => json
   end
 
   def register_user_online
-      user_id = get_id params[:access_token]
-      registration_id = params[:registration_id]
-       if registration_id.nil?
-         online_users.delete(user_id)
-       else
-         online_users[user_id] = registration_id
-       end
-      render :json => {'status' => 'Success'}
-   end
-
-  #private
-  def get_name(access_token)
-    user = FbGraph::User.me(access_token).fetch
-    user.name
+    fb_user = get_user params[:access_token]
+    registration_id = params[:registration_id]
+    user = User.find_by_facebook_id(fb_user.identifier) ||
+      if user.nil?
+        User.new({:facebook_id => fb_user.identifier, :name => fb_user.name, :device_registration_id => registration_id}).save
+      else
+        user.device_registration_id = registration_id
+        user.save!
+      end
+    render :json => {'status' => 'Success'}
   end
 
-  def get_id(access_token)
-    user = FbGraph::User.me(access_token).fetch
-    user.identifier
+  #private
+  def get_user(access_token)
+    FbGraph::User.me(access_token).fetch
   end
 
   def is_online?(id, min)

@@ -77,7 +77,7 @@ public class C2DMMessageReceiver extends C2DMBaseReceiver {
 	public void createNotification(Context context, String payload) {
 		NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.camera, "Need your help", System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.camera_icon, "Need your help", System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 		Intent intent = new Intent(context, MessageReceivedActivity.class);

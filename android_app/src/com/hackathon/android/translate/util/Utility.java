@@ -56,7 +56,6 @@ public class Utility extends Application {
 	public static void loadComponents(Context context) {
 		facebook = new Facebook(Constants.FACEBOOK_APP_ID);
 		sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context);
-		sharedPreferences.edit().remove(Constants.ACCESS_TOKEN).commit();
 		asyncRunner = new AsyncFacebookRunner(facebook);
 	}
 	
@@ -104,10 +103,26 @@ public class Utility extends Application {
 		return sharedPreferences.getString(Constants.ACCESS_TOKEN, null);
 	}
 	
+	public static String getFacebookId() {
+		return sharedPreferences.getString(Constants.FACEBOOK_ID, null);
+	}
+	
 	private static void updateSharedPreferences(String key, String value){
 		sharedPreferences.edit().putString(key, value).commit();
 	}
 	private static void updateSharedPreferences(String key, long value){
 		sharedPreferences.edit().putLong(key, value).commit();
+	}
+
+	public static void updateFacebookId() {
+		JSONObject json;
+		try {
+			json = new JSONObject(facebook.request("me"));
+			String userId = json.getString("id");
+			updateSharedPreferences(Constants.FACEBOOK_ID, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} 		
 	}
 }

@@ -1,4 +1,8 @@
 OcrWeb::Application.routes.draw do
+  resources :images
+
+  resources :users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -56,7 +60,8 @@ OcrWeb::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   #match ':controller(/:action(/:id))(.:format)'
   match 'register' => 'facebook#register_user_online', :via =>  [:post]
-  match 'upload' => 'facebook#upload_file', :via =>  [:post]
+  #match 'upload' => 'facebook#upload_file', :via =>  [:post]
+  match 'upload' => 'facebook#upload', :via =>  [:post]
   match 'message' => 'message#send_message', :via =>  [:get]
   match 'friends' => 'facebook#find_online_friends', :via =>  [:post]
 end

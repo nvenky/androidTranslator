@@ -23,7 +23,7 @@ public class IndexActivity extends TabActivity {
 		intent = new Intent().setClass(this, CameraPreviewActivity.class);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Camera").setIndicator("Translate",
-	                      res.getDrawable(R.drawable.camera))
+	                      res.getDrawable(R.drawable.camera_icon))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 

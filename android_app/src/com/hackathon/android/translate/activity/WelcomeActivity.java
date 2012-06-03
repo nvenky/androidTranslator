@@ -31,6 +31,7 @@ public class WelcomeActivity extends Activity {
 			Utility.getFacebook().authorize(this, new String[] { "email", "publish_checkins" }, new DialogListener() {
 				public void onComplete(Bundle values) {
 					Utility.updateAccessToken();
+					//Utility.updateFacebookId();
 					afterLogin();
 				}
 
@@ -48,16 +49,13 @@ public class WelcomeActivity extends Activity {
 		}
 	}
 
-	public void register(View view){
+	public void afterLogin() {
 		C2DMessaging.register(WelcomeActivity.this);
+		Intent dashboardActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+		startActivity(dashboardActivityIntent);
+		this.finish();
 	}
-	
-	public void afterLogin(){
-		C2DMessaging.register(WelcomeActivity.this);
-		Intent indexActivityIntent = new Intent(getApplicationContext(), IndexActivity.class);
-		startActivity(indexActivityIntent);
-	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

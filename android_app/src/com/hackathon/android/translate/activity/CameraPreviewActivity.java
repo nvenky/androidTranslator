@@ -3,34 +3,22 @@ package com.hackathon.android.translate.activity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
-
-import com.hackathon.android.translate.R;
-import com.hackathon.android.translate.R.id;
-import com.hackathon.android.translate.R.layout;
-import com.hackathon.android.translate.util.UploadImage;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.ImageFormat;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
+
+import com.hackathon.android.translate.R;
+import com.hackathon.android.translate.util.UploadImage;
 
 public class CameraPreviewActivity extends Activity {
 	private SurfaceView preview = null;
@@ -70,28 +58,6 @@ public class CameraPreviewActivity extends Activity {
 			camera.autoFocus(autoFocusCallback);
 			inPreview = false;
 		}
-	}
-
-	private Camera.Size getBestPreviewSize(int width, int height,
-			Camera.Parameters parameters) {
-		Camera.Size result = null;
-
-		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width <= width && size.height <= height) {
-				if (result == null) {
-					result = size;
-				} else {
-					int resultArea = result.width * result.height;
-					int newArea = size.width * size.height;
-
-					if (newArea > resultArea) {
-						result = size;
-					}
-				}
-			}
-		}
-
-		return (result);
 	}
 
 	private void startPreview() {
@@ -166,8 +132,8 @@ public class CameraPreviewActivity extends Activity {
 	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			new SavePhotoTask().execute(data);
-			camera.startPreview();
-			inPreview = true;
+			//camera.startPreview();
+			//inPreview = true;
 		}
 	};
 
@@ -185,15 +151,10 @@ public class CameraPreviewActivity extends Activity {
 				FileOutputStream fos = new FileOutputStream(photo.getPath());
 				fos.write(jpeg[0]);
 				fos.close();
-				new UploadImage().upload(photo);
+				UploadImage.upload(photo, CameraPreviewActivity.this);
 			} catch (java.io.IOException e) {
 				Log.e("PictureDemo", "Exception in photoCallback", e);
 			} catch (Exception e) {
-				AlertDialog alertDialog = new AlertDialog.Builder(
-						CameraPreviewActivity.this).create();
-				alertDialog.setTitle("Error Occurred");
-				alertDialog.setMessage("Exception - " + e.getMessage());
-				alertDialog.show();
 				Log.e("Pic Demo", "Upload Error", e);
 			}
 

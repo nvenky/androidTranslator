@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.widget.ListView;
 
@@ -19,7 +20,9 @@ import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.constant.Constants;
 import com.hackathon.android.translate.lazylist.LazyAdapter;
 import com.hackathon.android.translate.model.Friend;
+import com.hackathon.android.translate.model.KeyValuePair;
 import com.hackathon.android.translate.service.RestfulService;
+import com.hackathon.android.translate.util.Utility;
 
 public class FacebookFriendsActivity extends Activity {
 
@@ -28,12 +31,14 @@ public class FacebookFriendsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.facebook_friends);
 		ProgressDialog dialog = ProgressDialog.show(FacebookFriendsActivity.this, "", "Loading...");
+
+		Parcelable[] value = new KeyValuePair[1];
+		value[0] = new KeyValuePair(Constants.ACCESS_TOKEN, Utility.getAccessToken());
 		Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RestfulService.class);
 		intent.putExtra(Constants.RECEIVER, new FriendsListReceiver(new UpdateFriendsViewHandler(dialog)));
-		intent.putExtra(Constants.REST_PATH, "/friends");
+		intent.putExtra(Constants.REST_QUERY_DATA, value);
+		intent.putExtra(Constants.REST_ACTION, Constants.REST_URL_ACTIONS.FRIENDS);
 		startService(intent);
-		// Utility.getAsyncRunner().request("me/friends", new
-		// FBFriendsRequestListener(handler));
 	}
 
 	private class UpdateFriendsViewHandler extends Handler {
