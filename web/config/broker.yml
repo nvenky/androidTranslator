@@ -1,0 +1,12 @@
+development:
+    adapter: asqs
+    access_key_id:
+    secret_access_key:
+    host: queue.amazonaws.com
+    port: 80
+    reliable: true
+    reconnectDelay: 5
+    aws_version: 2006-04-01
+    content_type: text/plain
+    poll_interval: 1
+    cache_queue_list: true

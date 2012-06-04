@@ -15,6 +15,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.StorageClass;
 
 public class S3 {
 
@@ -52,7 +54,9 @@ public class S3 {
 			ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentLength(data.getBytes().length);
-			getInstance().putObject(bucketName, objectName, bais, metadata);
+			//SAVE COST WITH RRS..
+			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, bais, metadata).withStorageClass(StorageClass.ReducedRedundancy);
+			getInstance().putObject(putObjectRequest);
 		} catch (Exception exception) {
 			Log.e("TODO", "createObjectForBucket");
 		}

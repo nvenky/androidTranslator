@@ -5,7 +5,8 @@ public interface Constants {
 	String FACEBOOK_APP_ID = "378619692194435";
 	String C2DM_REGISTRATION_ID = "registration_id";
 	// String SERVER_URL = "http://10.16.3.215:3000";
-	String SERVER_URL = "http://192.168.1.4:3000";
+	//String SERVER_URL = "http://192.168.1.4:3000";
+	String SERVER_URL = "http://192.168.43.204:3000";
 	String BACKOFF = "backoff";
 	String RECEIVER = "receiver";
 	String REST_ACTION = "restPath";
