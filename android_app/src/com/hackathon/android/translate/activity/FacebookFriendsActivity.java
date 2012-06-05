@@ -18,7 +18,7 @@ import android.widget.ListView;
 
 import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.constant.Constants;
-import com.hackathon.android.translate.lazylist.LazyAdapter;
+import com.hackathon.android.translate.lazylist.FacebookFriendsLazyAdapter;
 import com.hackathon.android.translate.model.Friend;
 import com.hackathon.android.translate.model.KeyValuePair;
 import com.hackathon.android.translate.service.RestfulService;
@@ -52,7 +52,7 @@ public class FacebookFriendsActivity extends Activity {
 			@SuppressWarnings("unchecked")
 			List<Friend> friends = (List<Friend>) msg.obj;
 			ListView friendsList = (ListView) findViewById(R.id.friendsListView);
-			LazyAdapter adapter = new LazyAdapter(FacebookFriendsActivity.this, friends);
+			FacebookFriendsLazyAdapter adapter = new FacebookFriendsLazyAdapter(FacebookFriendsActivity.this, friends);
 			friendsList.setAdapter(adapter);
 			dialog.dismiss();
 		}

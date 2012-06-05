@@ -25,7 +25,7 @@ public class DashboardActivity extends Activity {
 	}
 
 	public void translate(View view) {
-		Intent translateActivityIntent = new Intent(getApplicationContext(), FacebookFriendsActivity.class);
+		Intent translateActivityIntent = new Intent(getApplicationContext(), TranslationGridActivity.class);
 		startActivity(translateActivityIntent);
 	}
 

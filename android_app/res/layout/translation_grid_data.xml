@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget44"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_x="201dp"
+    android:layout_y="165dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/translation_image"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/stub" 
+        android:contentDescription="@string/image_for_translation">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/translation_image_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"        
+        android:textColorHighlight="#656565" >
+    </TextView>
+
+</LinearLayout>

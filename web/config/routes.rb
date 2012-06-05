@@ -1,8 +1,4 @@
 OcrWeb::Application.routes.draw do
-  resources :images
-
-  resources :users
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -64,4 +60,6 @@ OcrWeb::Application.routes.draw do
   match 'upload' => 'facebook#upload', :via =>  [:post]
   match 'message' => 'message#send_message', :via =>  [:get]
   match 'friends' => 'facebook#find_online_friends', :via =>  [:post]
+  match 'images' => 'images#index', :via =>  [:post, :get]
+
 end

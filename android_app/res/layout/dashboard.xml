@@ -9,6 +9,7 @@
         android:drawableTop="@drawable/camera_icon"
         android:text="@string/take_picture"
         android:onClick="cameraPreview"
+        android:textSize="18dp"
          />
 
     <Button
@@ -16,7 +17,8 @@
         style="@style/DashboardButton"
         android:drawableTop="@drawable/translator"
         android:onClick="translate"
-        android:text="@string/translate" />
+        android:text="@string/translate" 
+        android:textSize="18dp"/>
    
 
 </com.google.android.apps.iosched.ui.widget.DashboardLayout>
