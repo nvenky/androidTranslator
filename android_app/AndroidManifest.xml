@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hackathon.android.translate"
+    android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -29,10 +30,12 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
+
             <!-- android:theme="@android:style/Theme.Translucent" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -49,15 +52,16 @@
             android:name=".activity.TranslationGridActivity"
             android:label="@string/app_name" >
         </activity>
-        
         <activity
             android:name=".activity.TranslateImageActivity"
             android:label="@string/app_name" >
         </activity>
-        <!-- <activity
+        <!--
+        <activity
             android:name=".activity.IndexActivity"
             android:label="@string/app_name" >
-        </activity> -->
+        </activity>
+        -->
         <activity
             android:name=".activity.FacebookFriendsActivity"
             android:label="@string/app_name" >
@@ -65,16 +69,18 @@
 
         <service android:name=".notification.C2DMMessageReceiver" />
         <service android:name=".service.RestfulService" />
-        
+
         <receiver
             android:name="com.google.android.c2dm.C2DMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.hackathon.android.translate" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.hackathon.android.translate" />
             </intent-filter>
         </receiver>

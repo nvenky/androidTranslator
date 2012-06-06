@@ -10,4 +10,6 @@
     <string name="new_message_received">New message received from</string>
     <string name="translate">Translate</string>
     <string name="image_for_translation">Image for translation</string>
+    <string name="translation">Translation</string>
+    <string name="submit">Submit</string>
 </resources>

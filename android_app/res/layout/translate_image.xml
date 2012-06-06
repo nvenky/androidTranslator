@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget44"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" 
+    android:background="@color/background_1">
+
+    <ImageView
+        android:id="@+id/translation_image"
+        android:layout_width="318dp"
+        android:layout_height="318dp"
+        android:contentDescription="@string/image_for_translation"
+        android:scaleType="centerCrop"
+        android:src="@drawable/stub" />
+
+    <TextView
+        android:id="@+id/translation_image_user_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/translation"
+        android:textColorHighlight="#656565"
+        android:textSize="16dp" >
+    </TextView>
+
+    <LinearLayout android:orientation="horizontal" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/translationText"
+            android:layout_width="226dp"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="submitTranslation"
+            android:text="@string/submit" />
+    </LinearLayout>
+
+</LinearLayout>

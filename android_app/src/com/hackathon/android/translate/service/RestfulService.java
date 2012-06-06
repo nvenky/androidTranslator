@@ -28,7 +28,9 @@ public class RestfulService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		final ResultReceiver receiver = intent.getParcelableExtra(Constants.RECEIVER);
 		String path = intent.getStringExtra(Constants.REST_ACTION);
-		List<NameValuePair> data = getPostParameters(intent.getParcelableArrayExtra(Constants.REST_QUERY_DATA));
+		Parcelable[] parcelableArrayExtra = intent.getParcelableArrayExtra(Constants.REST_QUERY_DATA);
+		List<NameValuePair> data = parcelableArrayExtra == null ? new ArrayList<NameValuePair>()
+				: getPostParameters(parcelableArrayExtra);
 
 		String result = post(Constants.SERVER_URL + path, data);
 		if (receiver != null) {

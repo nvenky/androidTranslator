@@ -1,10 +1,15 @@
 package com.hackathon.android.translate.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +30,8 @@ public class CameraPreviewActivity extends Activity {
 	private SurfaceHolder previewHolder = null;
 	private Camera camera = null;
 	private boolean inPreview = false;
-	
+	private int cameraDisplayOrientaton = 0;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,7 +54,7 @@ public class CameraPreviewActivity extends Activity {
 	@Override
 	public void onPause() {
 		stopPreview();
-		camera.release();	    
+		camera.release();
 		camera = null;
 		super.onPause();
 	}
@@ -66,12 +72,12 @@ public class CameraPreviewActivity extends Activity {
 			inPreview = true;
 		}
 	}
-	
+
 	private void stopPreview() {
 		if (inPreview) {
-            camera.stopPreview();
-            inPreview = false;    		
-        }
+			camera.stopPreview();
+			inPreview = false;
+		}
 	}
 
 	SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
@@ -79,16 +85,15 @@ public class CameraPreviewActivity extends Activity {
 			// no-op -- wait until surfaceChanged()
 		}
 
-		public void surfaceChanged(SurfaceHolder holder, int format, int width,
-				int height) {
+		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 			stopPreview();
-	        try {
-	            setCameraOrientationParameters(width, height);
-	            camera.setPreviewDisplay(previewHolder);
-	            startPreview();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			try {
+				setCameraOrientationParameters(width, height);
+				camera.setPreviewDisplay(previewHolder);
+				startPreview();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 		}
 
@@ -97,29 +102,33 @@ public class CameraPreviewActivity extends Activity {
 			Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
 			if (display.getRotation() == Surface.ROTATION_0) {
-			    parameters.setPreviewSize(height, width);
-			    camera.setDisplayOrientation(90);
+				parameters.setPreviewSize(height, width);
+				camera.setDisplayOrientation(90);
+				cameraDisplayOrientaton = 90;
 			}
 
 			if (display.getRotation() == Surface.ROTATION_90) {
-			    parameters.setPreviewSize(width, height);
-			    camera.setDisplayOrientation(0);
+				parameters.setPreviewSize(width, height);
+				camera.setDisplayOrientation(0);
+				cameraDisplayOrientaton = 0;
 			}
 
 			if (display.getRotation() == Surface.ROTATION_180) {
-			    parameters.setPreviewSize(height, width);
-			    camera.setDisplayOrientation(270);
+				parameters.setPreviewSize(height, width);
+				camera.setDisplayOrientation(270);
+				cameraDisplayOrientaton = 270;
 			}
 
 			if (display.getRotation() == Surface.ROTATION_270) {
-			    parameters.setPreviewSize(width, height);
-			    camera.setDisplayOrientation(180);
+				parameters.setPreviewSize(width, height);
+				camera.setDisplayOrientation(180);
+				cameraDisplayOrientaton = 180;
 			}
 			camera.setParameters(parameters);
 		}
 
 		public void surfaceDestroyed(SurfaceHolder holder) {
-		     stopPreview();
+			stopPreview();
 		}
 	};
 
@@ -132,24 +141,31 @@ public class CameraPreviewActivity extends Activity {
 	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			new SavePhotoTask().execute(data);
-			//camera.startPreview();
-			//inPreview = true;
+			// camera.startPreview();
+			// inPreview = true;
 		}
 	};
 
 	class SavePhotoTask extends AsyncTask<byte[], String, String> {
 		@Override
-		protected String doInBackground(byte[]... jpeg) {
-			File photo = new File(Environment.getExternalStorageDirectory(),
-					"photo.jpg");
+		protected String doInBackground(byte[]... data) {
+			Bitmap thePicture = BitmapFactory.decodeByteArray(data[0], 0, data[0].length);
+			Matrix matrix = new Matrix();
+			matrix.postRotate(cameraDisplayOrientaton);
+			thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), matrix,
+					true);
+			File photo = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
 			System.out.println("File name - " + photo.getAbsolutePath());
 			if (photo.exists()) {
 				photo.delete();
 			}
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			thePicture.compress(CompressFormat.JPEG, 75, bos);
+			byte[] pictureBytes = bos.toByteArray();
 
 			try {
 				FileOutputStream fos = new FileOutputStream(photo.getPath());
-				fos.write(jpeg[0]);
+				fos.write(pictureBytes);
 				fos.close();
 				UploadImage.upload(photo, CameraPreviewActivity.this);
 			} catch (java.io.IOException e) {
@@ -157,7 +173,6 @@ public class CameraPreviewActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("Pic Demo", "Upload Error", e);
 			}
-
 			return (null);
 		}
 	}

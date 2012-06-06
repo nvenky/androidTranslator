@@ -61,5 +61,6 @@ OcrWeb::Application.routes.draw do
   match 'message' => 'message#send_message', :via =>  [:get]
   match 'friends' => 'facebook#find_online_friends', :via =>  [:post]
   match 'images' => 'images#index', :via =>  [:post, :get]
-
+  match 'images/:image_id' => 'images#show', :via =>  [:post, :get]
+  match 'images/:image_id/translations' => 'images#add_translation', :via =>  [:post]
 end

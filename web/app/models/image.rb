@@ -5,6 +5,7 @@ class Image < ActiveRecord::Base
   belongs_to :user
   after_save :generate_thumbnails
   delegate :name, :to => :user, :prefix => true
+  has_many :translations
 
   def generate_thumbnails
      message_producer.generate_thumbnail_message file_name

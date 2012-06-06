@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.widget.GridView;
 
@@ -20,8 +19,8 @@ import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.constant.Constants;
 import com.hackathon.android.translate.lazylist.ImagesForTranslationLazyAdapter;
 import com.hackathon.android.translate.model.Image;
-import com.hackathon.android.translate.model.KeyValuePair;
 import com.hackathon.android.translate.service.RestfulService;
+import com.hackathon.android.translate.util.Utility;
 
 public class TranslationGridActivity extends Activity {
 
@@ -31,12 +30,8 @@ public class TranslationGridActivity extends Activity {
 		setContentView(R.layout.translation_grid);
 		ProgressDialog dialog = ProgressDialog.show(TranslationGridActivity.this, "", "Loading...");
 
-		Parcelable[] value = new KeyValuePair[0];
-		// value[0] = new KeyValuePair(Constants.ACCESS_TOKEN,
-		// Utility.getAccessToken());
 		Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RestfulService.class);
 		intent.putExtra(Constants.RECEIVER, new ImagesForTranslationReceiver(new ImagesForTranslationHandler(dialog)));
-		intent.putExtra(Constants.REST_QUERY_DATA, value);
 		intent.putExtra(Constants.REST_ACTION, Constants.REST_URL_ACTIONS.IMAGES);
 		startService(intent);
 	}
@@ -51,6 +46,7 @@ public class TranslationGridActivity extends Activity {
 		@SuppressWarnings("unchecked")
 		public void handleMessage(Message msg) {
 			List<Image> images = (List<Image>) msg.obj;
+			Utility.updateImages(getApplicationContext(), images);
 			GridView translationGridView = (GridView) findViewById(R.id.translationGridView);
 			ImagesForTranslationLazyAdapter adapter = new ImagesForTranslationLazyAdapter(TranslationGridActivity.this,
 					images);

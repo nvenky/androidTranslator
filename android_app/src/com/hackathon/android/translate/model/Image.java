@@ -1,8 +1,10 @@
 package com.hackathon.android.translate.model;
 
+import java.io.Serializable;
+
 import com.hackathon.android.translate.constant.Constants;
 
-public class Image {
+public class Image implements Serializable {
 
 	private long id;
 	private String userName;

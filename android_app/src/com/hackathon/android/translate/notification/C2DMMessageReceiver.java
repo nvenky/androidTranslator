@@ -18,7 +18,7 @@ import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 import com.hackathon.android.translate.R;
-import com.hackathon.android.translate.activity.MessageReceivedActivity;
+import com.hackathon.android.translate.activity.TranslateImageActivity;
 import com.hackathon.android.translate.constant.Constants;
 import com.hackathon.android.translate.util.HttpUtils;
 import com.hackathon.android.translate.util.Utility;
@@ -80,11 +80,12 @@ public class C2DMMessageReceiver extends C2DMBaseReceiver {
 		Notification notification = new Notification(R.drawable.camera_icon, "Need your help", System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		Intent intent = new Intent(context, MessageReceivedActivity.class);
-		intent.putExtra("payload", payload);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
-		notification.setLatestEventInfo(context, "Translator", "Please help your friend '" + payload
-				+ "' with translation", pendingIntent);
+
+		Intent translateImageActivityIntent = new Intent(context, TranslateImageActivity.class);
+		translateImageActivityIntent.putExtra(Constants.IMAGE_POSITION, 0);		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, translateImageActivityIntent, 0);
+		notification.setLatestEventInfo(context, "Translator", payload
+				+ ": Can you please translate this for me?", pendingIntent);
 		notificationManager.notify(0, notification);
 	}
 
