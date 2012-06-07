@@ -28,7 +28,7 @@ public class WelcomeActivity extends Activity {
 	public void login(View view) {
 		Utility.loginWithExistingToken();
 		if (!Utility.getFacebook().isSessionValid()) {
-			Utility.getFacebook().authorize(this, new String[] { "email", "publish_checkins" }, new DialogListener() {
+			Utility.getFacebook().authorize(this, new String[] {}, new DialogListener() {
 				public void onComplete(Bundle values) {
 					Utility.updateAccessToken();
 					//Utility.updateFacebookId();

@@ -1,9 +1,7 @@
 package com.hackathon.android.translate.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,12 +16,13 @@ import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.constant.Constants;
-import com.hackathon.android.translate.lazylist.ImageLoader;
+import com.hackathon.android.translate.model.Image;
 import com.hackathon.android.translate.model.KeyValuePair;
 import com.hackathon.android.translate.service.RestfulService;
 import com.hackathon.android.translate.ui.TranslateImagePagerAdapter;
@@ -31,33 +30,43 @@ import com.hackathon.android.translate.util.Utility;
 
 public class TranslateImageActivity extends Activity {
 
+	private ArrayAdapter<String> adapter;
+	private List<String> translations = new ArrayList<String>();
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.translation_image_pager);
-		//ProgressDialog dialog = ProgressDialog.show(TranslateImageActivity.this, "", "Loading...");
-		TranslateImagePagerAdapter adapter = new TranslateImagePagerAdapter(Utility.getImages(getApplicationContext()));
+		ProgressDialog dialog = ProgressDialog.show(TranslateImageActivity.this, "", "Loading...");
+		List<Image> images = Utility.getImages(getApplicationContext());
+		TranslateImagePagerAdapter adapter = new TranslateImagePagerAdapter(images);
 		ViewPager translationImagePager = (ViewPager) findViewById(R.id.translationImagePager);
 		translationImagePager.setAdapter(adapter);
-		translationImagePager.setCurrentItem(getIntent().getIntExtra(Constants.IMAGE_POSITION, -1));
-//		Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RestfulService.class);
-//		intent.putExtra(Constants.RECEIVER, new ImagesForTranslationReceiver(new TranslateImageViewHandler(dialog)));
-//		intent.putExtra(Constants.REST_ACTION,
-//				Constants.REST_URL_ACTIONS.IMAGES + "/" + getIntent().getStringExtra(Constants.IMAGE_ID));
-//		startService(intent);
+		int imagePosition = getIntent().getIntExtra(Constants.IMAGE_POSITION, -1);
+		translationImagePager.setCurrentItem(imagePosition);
+		Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RestfulService.class);
+		intent.putExtra(Constants.RECEIVER, new ImagesForTranslationReceiver(new TranslateImageViewHandler(dialog)));
+		long imageId = images.get(imagePosition).getId();
+		intent.putExtra(Constants.REST_ACTION,
+				Constants.REST_URL_ACTIONS.IMAGES + "/" + imageId);
+		getIntent().putExtra(Constants.IMAGE_ID, imageId);
+		startService(intent);
 	}
 
 	public void submitTranslation(View view) {
 		String imageId = getIntent().getStringExtra(Constants.IMAGE_ID);
 		Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RestfulService.class);
 
-		EditText translationText = (EditText) findViewById(R.id.translationText);
+		EditText translationText = (EditText) findViewById(R.id.translation_text);
 		Parcelable[] value = new KeyValuePair[1];
-		value[0] = new KeyValuePair(Constants.TRANSLATION_DATA, translationText.getText().toString());
+		String translatedData = translationText.getText().toString();
+		value[0] = new KeyValuePair(Constants.TRANSLATION_DATA, translatedData);
 		String url = Constants.REST_URL_ACTIONS.IMAGES + "/" + imageId + "/translations";
 		intent.putExtra(Constants.REST_ACTION, url);
 		intent.putExtra(Constants.REST_QUERY_DATA, value);
 		startService(intent);
+		translations.add(translatedData);
+		adapter.notifyDataSetChanged();
 	}
 
 	private class ImagesForTranslationReceiver extends ResultReceiver {
@@ -68,11 +77,10 @@ public class TranslateImageActivity extends Activity {
 			this.handler = handler;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void onReceiveResult(int resultCode, Bundle resultData) {
 			JSONObject json;
-			List<String> translations = new ArrayList<String>();
+			
 			try {
 				json = new JSONObject(resultData.getString(Constants.RESULT));
 				JSONArray translationsJson = json.getJSONArray(Constants.TRANSLATIONS);
@@ -81,11 +89,7 @@ public class TranslateImageActivity extends Activity {
 					JSONObject obj = translationsJson.getJSONObject(i);
 					translations.add(obj.getString(Constants.DATA));
 				}
-				Map mapData = new HashMap();
-				mapData.put(Constants.TRANSLATIONS, translations);
-				mapData.put(Constants.FILE_NAME, json.getString(Constants.FILE_NAME));
 				Message msg = Message.obtain();
-				msg.obj = mapData;
 				handler.sendMessage(msg);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -100,12 +104,11 @@ public class TranslateImageActivity extends Activity {
 			this.dialog = dialog;
 		}
 
-		@SuppressWarnings("unchecked")
 		public void handleMessage(Message msg) {
-			Map data = (Map) msg.obj;
-			ImageLoader imageLoader = new ImageLoader(TranslateImageActivity.this);
-			ImageView imageView = (ImageView) findViewById(R.id.translation_image);
-			imageLoader.displayImage(Constants.BUCKET_URL + (String) data.get(Constants.FILE_NAME), imageView);
+			adapter = new ArrayAdapter<String>(TranslateImageActivity.this,
+					R.id.translation_data_list, translations);
+			ListView translationList = (ListView) findViewById(R.id.translation_data_list);
+			translationList.setAdapter(adapter);
 			dialog.dismiss();
 		}
 	}

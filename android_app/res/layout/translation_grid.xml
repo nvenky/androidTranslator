@@ -10,6 +10,5 @@
     android:numColumns="auto_fit"
     android:columnWidth="135dp"
     android:stretchMode="columnWidth"
-    android:gravity="center"
-    android:background="@color/background_1">
+    android:gravity="center">
 </GridView>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Android Translator</string>
-    <string name="take_picture">Picture</string>
+    <string name="take_picture">Take Picture</string>
     <string name="welcome_to">Welcome to</string>
     <string name="translator">Translator</string>
     <string name="translation_service_description">A translation service provided by your own Friends</string>
