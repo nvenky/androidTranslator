@@ -14,12 +14,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 import com.hackathon.android.translate.R;
 import com.hackathon.android.translate.activity.TranslateImageActivity;
 import com.hackathon.android.translate.constant.Constants;
+import com.hackathon.android.translate.service.ImageService;
 import com.hackathon.android.translate.util.HttpUtils;
 import com.hackathon.android.translate.util.Utility;
 
@@ -80,6 +83,7 @@ public class C2DMMessageReceiver extends C2DMBaseReceiver {
 		Notification notification = new Notification(R.drawable.camera_icon, "Need your help", System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
+		new ImageService(context).getImagesFromServer(null);
 
 		Intent translateImageActivityIntent = new Intent(context, TranslateImageActivity.class);
 		translateImageActivityIntent.putExtra(Constants.IMAGE_POSITION, 0);		
@@ -87,6 +91,8 @@ public class C2DMMessageReceiver extends C2DMBaseReceiver {
 		notification.setLatestEventInfo(context, "Translator", payload
 				+ ": Can you please translate this for me?", pendingIntent);
 		notificationManager.notify(0, notification);
+		Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		RingtoneManager.getRingtone(getApplicationContext(), notificationSound).play();
 	}
 
 	private void sendRegistrationIdToServer(String registrationId) {

@@ -9,6 +9,7 @@
         android:text="@string/take_picture"
         android:onClick="cameraPreview"
         android:textSize="18dp"
+        android:background="@null"
          />  
 
     <Button
@@ -16,7 +17,8 @@
         style="@style/DashboardButton"
         android:drawableTop="@drawable/translator"
         android:onClick="translate"
-        android:text="@string/translate" 
+        android:text="@string/translate"
+         android:background="@null" 
         android:textSize="18dp"/>
    
 

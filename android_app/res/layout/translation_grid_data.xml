@@ -12,12 +12,12 @@
         android:layout_width="50dip"
         android:layout_height="50dip"
         android:scaleType="centerCrop"
-        android:src="@drawable/stub" 
+        android:src="@drawable/image_loading" 
         android:contentDescription="@string/image_for_translation">
     </ImageView>
 
     <TextView
-        android:id="@+id/translation_image_user_name"
+        android:id="@+id/translation_grid_image_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"        

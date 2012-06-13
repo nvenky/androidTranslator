@@ -17,7 +17,7 @@
     </style>
 
     <style name="TransparentButton" parent="@android:style/Widget.Button">
-        <item name="android:background">@null</item>
+        <!-- <item name="android:background">@null</item> -->
         <item name="android:textColor">@color/text_view</item>
     </style>
 

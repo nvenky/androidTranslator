@@ -48,7 +48,7 @@ public class ImagesForTranslationLazyAdapter extends BaseAdapter {
 		if (convertView == null)
 			vi = inflater.inflate(R.layout.translation_grid_data, null);
 
-		TextView text = (TextView) vi.findViewById(R.id.translation_image_user_name);
+		TextView text = (TextView) vi.findViewById(R.id.translation_grid_image_user_name);
 		ImageView image = (ImageView) vi.findViewById(R.id.translation_grid_image);
 		text.setText(images.get(position).getUserName());
 		imageLoader.displayImage(images.get(position).getFileURL(), image);

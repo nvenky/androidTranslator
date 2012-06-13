@@ -12,14 +12,16 @@ module ApplicationHelper
       :collapse_key => "foobar" #optional
       }
       #C2DM.send_notifications(notifications)
-      c2dm.send_notification(notification)
+      output = c2dm.send_notification(notification)
+      p output
     }
   end
 
   private
   def auth_token
     # @auth_token ||= generate_auth_token
-    @auth_token = 'DQAAAMMAAAArHJogMonIrMly8m1qXo0VGS1YUVlqbW6M_41ucl2fgoN4F_t7yAobtJR17LngcU897OEM233YfAezmaW7JC6VUYhwH3lgtVZB2wJlKhEuEvRptEoqqM7AP1zwQbo4uU13YBn8JyY4356HhiY-zV4oWLDZGvUeiMbhR8A0mGPLLH3ymO2IVMSVp_kLzJlNO5ERscO28ivL5plsgGgHbniacgMDUuvdbtVUnJ5K68vL2szj1I9Fey-K-3FFIxdZOLSqJCGsE0UPR332vn3Wzxnl'
+    @auth_token = 'DQAAAMQAAAArHJogMonIrMly8m1qXo0VJTSjZjTVQHlkmuELGMGth_PE88A7EnBpKtB6SZ1xJ-i_yBloEJkfxJnLZiD_I47YRDu9v_72pIEWZt3x9DzTAuA7RveEzzJIqeZIpuEtg8Pv80d-C_dj_rkx1w_HJHXC6qOOPYDAkvOlQDQAnCbc9EtTRG2n6WKgz7KGdtSs-Lv8EtkOZFgBX6IZ6JqE-6mgCdR4pxwYjbCcGbyVpDDL2mGi0H3tRwrGifQ9YOsw5DJPbg6iVhCuYVWXs9d8i-rH'
+    #@auth_token = 'DQAAAMMAAAArHJogMonIrMly8m1qXo0VGS1YUVlqbW6M_41ucl2fgoN4F_t7yAobtJR17LngcU897OEM233YfAezmaW7JC6VUYhwH3lgtVZB2wJlKhEuEvRptEoqqM7AP1zwQbo4uU13YBn8JyY4356HhiY-zV4oWLDZGvUeiMbhR8A0mGPLLH3ymO2IVMSVp_kLzJlNO5ERscO28ivL5plsgGgHbniacgMDUuvdbtVUnJ5K68vL2szj1I9Fey-K-3FFIxdZOLSqJCGsE0UPR332vn3Wzxnl'
   end
 
 end

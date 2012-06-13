@@ -9,17 +9,11 @@
         android:id="@+id/translation_image"
         android:layout_width="match_parent"
         android:layout_height="307dp"
+        android:layout_weight="0.26"
         android:contentDescription="@string/image_for_translation"
         android:scaleType="centerCrop"
-        android:src="@drawable/stub" />
-
-    <ListView
-        android:id="@+id/translation_data_list"
-        android:layout_width="wrap_content"
-        android:layout_height="67dp"
-        android:layout_weight="0.02"
-        android:drawSelectorOnTop="false" />
-
+        android:src="@drawable/image_loading" />
+    
     <TextView
         android:id="@+id/translation_image_user_name"
         android:layout_width="fill_parent"
@@ -28,6 +22,14 @@
         android:textColorHighlight="#656565"
         android:textSize="16dp" >
     </TextView>
+    
+    <ListView
+        android:id="@+id/translation_data_list"
+        android:layout_width="wrap_content"
+        android:layout_height="67dp"
+        android:layout_weight="0.00"
+        android:drawSelectorOnTop="false"
+        android:fadeScrollbars="false"  />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -36,9 +38,10 @@
 
         <EditText
             android:id="@+id/translation_text"
-            android:layout_width="226dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10" android:inputType="text"/>
+            android:ems="10"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/button1"

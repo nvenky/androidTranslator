@@ -15,6 +15,7 @@ class FacebookController < ApplicationController
     fb_user = get_user(params[:access_token])
     user = User.find_by_facebook_id fb_user.identifier
     Image.new({:user => user, :file_name => uploaded_file_name}).save!
+    p 'Uploaded Image, sending message to friends'
     send_message_to_online_friends user.name
     render :text => "File has been uploaded successfully"
   end
@@ -33,13 +34,13 @@ class FacebookController < ApplicationController
   def register_user_online
     fb_user = get_user params[:access_token]
     registration_id = params[:registration_id]
-    user = User.find_by_facebook_id(fb_user.identifier) ||
-      if user.nil?
-        User.new({:facebook_id => fb_user.identifier, :name => fb_user.name, :device_registration_id => registration_id}).save
-      else
-        user.device_registration_id = registration_id
-        user.save!
-      end
+    user = User.find_by_facebook_id(fb_user.identifier)
+    if user.nil?
+      User.new({:facebook_id => fb_user.identifier, :name => fb_user.name, :device_registration_id => registration_id}).save!
+    else
+      user.device_registration_id = registration_id
+      user.save!
+    end
     render :json => {'status' => 'Success'}
   end
 

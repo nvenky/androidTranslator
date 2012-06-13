@@ -29,36 +29,38 @@ public class WelcomeActivity extends Activity {
 		Utility.loginWithExistingToken();
 		if (!Utility.getFacebook().isSessionValid()) {
 			Utility.getFacebook().authorize(this, new String[] {}, new DialogListener() {
-				public void onComplete(Bundle values) {
-					Utility.updateAccessToken();
-					//Utility.updateFacebookId();
-					afterLogin();
+				public void onComplete(Bundle values) {	
+					Utility.updateAccessToken();					
+				    afterLogin();
 				}
 
 				public void onCancel() {
+					System.out.println("CANCELLED");
 				}
 
 				public void onFacebookError(FacebookError e) {
+					System.out.println("onFbERROR" + e.getMessage());
 				}
 
 				public void onError(DialogError e) {
-				}
+					System.out.println("onERROR" + e.getMessage());
+				}				
 			});
 		} else {
 			afterLogin();
 		}
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    Utility.getFacebook().authorizeCallback(requestCode, resultCode, data);
+	}
+
+
 	public void afterLogin() {
-		C2DMessaging.register(WelcomeActivity.this);
+		C2DMessaging.register(WelcomeActivity.this);		
 		Intent dashboardActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
 		startActivity(dashboardActivityIntent);
 		this.finish();
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		Utility.getFacebook().authorizeCallback(requestCode, resultCode, data);
-	}
+	}	
 }

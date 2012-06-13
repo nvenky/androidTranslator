@@ -111,7 +111,8 @@ public class Utility extends Application {
 	}
 
 	public static String getFacebookId() {
-		return sharedPreferences.getString(Constants.FACEBOOK_ID, null);
+		String facebookId = sharedPreferences.getString(Constants.FACEBOOK_ID, null);
+		return facebookId != null ? facebookId : updateAndReturnFacebookId();
 	}
 
 	private static void updateSharedPreferences(String key, String value) {
@@ -122,12 +123,13 @@ public class Utility extends Application {
 		sharedPreferences.edit().putLong(key, value).commit();
 	}
 
-	public static void updateFacebookId() {
+	private static String updateAndReturnFacebookId() {
 		JSONObject json;
 		try {
 			json = new JSONObject(facebook.request("me"));
 			String userId = json.getString("id");
 			updateSharedPreferences(Constants.FACEBOOK_ID, userId);
+			return userId;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

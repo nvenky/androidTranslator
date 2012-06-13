@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/take_picture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="takePicture"
-        android:text="@string/take_picture" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <SurfaceView
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="396dp" />
+        android:layout_height="match_parent" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/pic_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/home_btn_translate"
+            style="@style/DashboardButton"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:contentDescription="@string/take_picture"
+            android:drawableTop="@drawable/translator"
+            android:onClick="takePicture"
+            android:src="@drawable/camera_pic" />
+
+    </LinearLayout>
+
+</FrameLayout>
